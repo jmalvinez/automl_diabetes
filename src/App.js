@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -46,6 +46,7 @@ const App = () => {
   const [bmi, setBmi] = useState();
   const [diabetesPedigree, setDiabetesPedigree] = useState();
   const [diastolicBp, setDiastolicBp] = useState();
+  const [checked, setChecked] = useState(false);
   const [plasmaGlucose, setPlasmaGlucose] = useState();
   const [pregnancies, setPregnancies] = useState();
   const [result, setResult] = useState('');
@@ -80,6 +81,8 @@ const App = () => {
         break;
       default:
     }
+
+    setChecked(false);
   };
 
   const handleCheck = (event) => {
@@ -112,6 +115,7 @@ const App = () => {
       const value = JSON.parse(data).result[0];
 
       setResult(`${value} - ${!value ? 'Not' : ''} Diabetic`);
+      setChecked(true);
     });
   };
 
@@ -124,6 +128,12 @@ const App = () => {
       />
     </div>
   );
+
+  useEffect(() => {
+    if (!checked) {
+      setResult('');
+    }
+  }, [checked]);
 
   return (
     <Container className='app' maxWidth='xs'>
